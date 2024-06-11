@@ -1,0 +1,5 @@
+name=Keyboard Demo
+author=Raphaël Calabro
+description=C port of the Keyboard API.
+bundleID=fr.rca.pdkeyboard
+imagePath=/
