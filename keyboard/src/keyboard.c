@@ -154,6 +154,7 @@ static LCDBitmap * _Nullable menuImageOK;
 static LCDBitmap * _Nullable menuImageDelete;
 static LCDBitmap * _Nullable menuImageCancel;
 
+static float fontHeight;
 static const char lowerColumn[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 static const char upperColumn[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 static const char numbersColumn[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', ',', ':', ';', '<', '=', '>', '?', '!', '\'', '"', '#', '$', '%', '&', '(', ')', '*', '+', '-', '/', '|', '\\', '[', ']', '^', '_', '`', '{', '}', '~', '@'};
@@ -467,7 +468,7 @@ static void drawKeyboard(PDKeyboard * _Nonnull self) {
 
         // letters above
         int j = 0;
-        while (y2 + rowHeight + yOffset > 0) {
+        while (y2 + rowHeight + yOffset > fontHeight) {
             j += 1;
             y2 -= rowHeight;
             cy = y2 + 4 + yOffset;
@@ -1005,6 +1006,7 @@ static void loadFontAndImages(void) {
     if (error) {
         playdate->system->error("Unable to load font: %s", error);
     }
+    fontHeight = playdate->graphics->getFontHeight(keyboardFont);
     menuColumn[0] = menuImageSpace = loadBitmapOrError("CoreLibs/assets/keyboard/menu-space");
     menuColumn[1] = menuImageOK = loadBitmapOrError("CoreLibs/assets/keyboard/menu-ok");
     menuColumn[2] = menuImageDelete = loadBitmapOrError("CoreLibs/assets/keyboard/menu-del");
@@ -1217,6 +1219,7 @@ const struct pd_keyboard keyboardApi = (struct pd_keyboard) {
 
     .setKeyboardDidShowCallback = PDKeyboardSetKeyboardDidShowCallback,
     .setKeyboardDidHideCallback = PDKeyboardSetKeyboardDidHideCallback,
+    .setKeyboardWillHideCallback = PDKeyboardSetKeyboardWillHideCallback,
     .setKeyboardAnimatingCallback = PDKeyboardSetKeyboardAnimatingCallback,
     .setTextChangedCallback = PDKeyboardSetTextChangedCallback,
 };
